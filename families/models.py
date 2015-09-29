@@ -61,8 +61,8 @@ class Relative(models.Model):
         verbose_name=u"Додаткові нотатки"
     )
 
-    father = models.OneToOneField("self", blank=True, related_name="dad")
-    mother = models.OneToOneField("self", blank=True, related_name="mom")
+    father = models.ForeignKey("self", blank=True, null=True, related_name="children_dad")
+    mother = models.ForeignKey("self", blank=True, null=True, related_name="children_mom")
 
     def __unicode__(self):
         return u"%s %s" % (self.first_name, self.last_name)
