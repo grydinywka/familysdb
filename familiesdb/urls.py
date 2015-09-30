@@ -13,9 +13,27 @@ Including another URLconf
     1. Add an import:  from blog import urls as blog_urls
     2. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
-from django.conf.urls import include, url
+from django.conf.urls import patterns, include, url
 from django.contrib import admin
 
-urlpatterns = [
+urlpatterns = patterns('',
+    #Info urls
+    url(r'^$', 'families.views.info.info', name='home'),
+
+    #Relatives urls
+    url(r'^relatives/$', 'families.views.relatives.relatives_list', name='relative_list'),
+    url(r'^relatives/add/$', 'families.views.relatives.relatives_add', name='relatives_add'),
+    url(r'^relatives/(?P<rid>\d+)/edit/$', 'families.views.relatives.relatives_edit', name='relatives_edit'),
+    url(r'^relatives/(?P<rid>\d+)/native/$', 'families.views.relatives.relatives_native', name='relatives_native'),
+    url(r'^relatives/(?P<rid>\d+)/info/$', 'families.views.relatives.relatives_info', name='relatives_info'),
+    url(r'^relatives/(?P<rid>\d+)/delete/$', 'families.views.relatives.relatives_delete', name='relatives_delete'),
+
+    #Generations urls
+    url(r'^generations/$', 'families.views.generations.generations_list', name='generations'),
+
+    #Tree's urls
+    url(r'^tree/', 'families.views.tree.tree', name='tree'),
+
     url(r'^admin/', include(admin.site.urls)),
-]
+)
+

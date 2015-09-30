@@ -1,3 +1,48 @@
-.my {
-    background-color:#111111;
+body {
+	background-color: ##fbfbfa;
+}
+
+/* Global Styles */
+h1, h2, h3, h4, h5, h6 {
+	font-weight: bold;
+}
+
+.alert {
+	/**/
+	margin-top: 10px;
+}
+
+#footer {
+	border-top: 1px solid #dddddd;
+	padding-top: 10px;
+}
+
+/* Group Selector */
+#group-selector {
+	margin-top: 30px;
+}
+
+#group-selector select {
+	margin: 0;
+	width: 65%;
+	background-color: #ffffff;
+	border: 1px solid #cccccc;
+	height: 30px;
+	line-height: 30px;
+	color: #555555;
+}
+
+#head_base {
+	/*border: 2px solid #cccccc;*/
+}
+
+#add_relative {
+	/*border: 2px solid #cccccc;*/
+	margin-top: 20px;
+}
+
+#myImg {
+	margin: 50px auto;
+	width: 360px;
+	display: block;
 }

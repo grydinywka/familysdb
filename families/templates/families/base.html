@@ -1,0 +1,117 @@
+{% load static from staticfiles %}
+
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+	<meta charset="UTF-8" />
+	<title>Родове Дерево Ігнатенка Сергія - {% block meta_title %}{% endblock meta_title %}</title>
+	<meta name="description" value="Сайт для Родового Дерева" />
+	<meta name="viewport" content="with=device-width, initial-scale=1">
+
+	 <!--Include Styles -->
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" href="{{ PORTAL_URL }}{% static "css/main.css" %}">
+
+	{% block extra_css %}{% endblock extra_css %}
+
+</head>
+<body>
+	<!-- Start Container -->
+	<div class="container">
+
+		<!-- Start Header -->
+		<div class="row" id="header">
+
+			<!-- Logo -->
+			<div class="col-xs-8">
+				<h1>Дерево Роду Сергія Ігнатенка</h1>
+			</div>
+
+			<!-- Group selector -->
+			<div class="col-xs-4" id="group-selector">
+				<strong>Прізвища:</strong>
+				<select>
+					<option value="">Усі Родичі</option>
+					<option value="">Ігнатенко</option>
+					<option value="">Пономарьов</option>
+				</select>
+			</div>
+		</div>
+		<!-- End Header -->
+
+		<!-- Start Subheader -->
+		<div class="row" id="sub-header">
+			<div class="col-xs-12">
+				<ul class="nav nav-tabs" role="tablist">
+					<li role="presentation"
+						{% url 'home' as the_url_home %}
+						{% if request.path == the_url_home %}class="active"{% endif %}>
+						<a href="{% url 'home' %}">Інформація</a>
+					</li>
+					<li role="presentation"
+						{% url 'relative_list' as the_url %}
+						{% if the_url in request.path %}class="active"{% endif %}>
+						<a href="{% url 'relative_list' %}">Родичі</a>
+					</li>
+
+					<li role="presentation"
+						{% url 'generations' as the_url %}
+						{% if the_url in request.path %}class="active"{% endif %}>
+						<a href="{% url 'generations' %}">Покоління</a>
+					</li>
+
+					<li role="presentation"
+						{% url "tree" as the_url %}
+						{% if the_url in request.path %}class="active"{% endif %}>
+						<a href="{% url 'tree' %}">Дерево</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<!-- End Subheader -->
+
+		<!-- Start Main Page Content -->
+		<div class="row" id="content-colomns">
+
+			{% comment "Not used alert so far" %}
+			<!-- Status message -->
+			<div class="alert alert-warning">Статутне Повідомлення</div>
+			{% endcomment %}
+
+		<div class="row">
+			<div class="col-xs-4" id="head_base">
+				<h2>{% block title %}{% endblock title %}</h2>
+			</div>
+			<div class="col-xs-3" id="add_relative">
+				<!-- Add Relative Button -->
+				{% block add_relative %}{% endblock add_relative %}
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-xs-12" id="content-colomn">
+
+				{% block content %}{% endblock content %}
+
+			</div>
+		</div>
+		<!-- End Main Page Content -->
+
+		<!-- Start Footer -->
+		<div class="row" id="footer">
+			<div class="col-xs-12">
+				&copy; 2015 Дерево Роду Сергія
+			</div>
+		</div>
+		<!-- End Footer -->
+
+	</div>
+	<!-- End Container -->
+
+	<!-- JS Section -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+	{% block extra_js %}{% endblock extra_js %}
+</body>
+</html>

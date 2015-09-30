@@ -1,0 +1,37 @@
+{% extends "families/base.html" %}
+
+{% load static from staticfiles %}
+
+{% block meta_title %}Покоління{% endblock meta_title %}
+
+{% block title %}Покоління{% endblock title %}
+
+
+{% block content %}
+{% for main_person in main_relatives %}
+<!-- Start Relatives' Listing -->
+<h3>{% block quarter %}{{ main_person.person }}{% endblock quarter %}</h3>
+<table class="table table-bordered table-hover">
+	<thead>
+		<tr>
+			<th><a href="#">№</a></th>
+			<th><a href="#">Представники покоління</a></th>
+	</thead>
+	<tbody>
+		{% for generation in main_person.generations %}
+		<tr>
+			<td>{{ generation.id }}</td>
+			<td>
+				{% for relative in generation.relatives %}
+				{{ relative }},
+				{% endfor %}
+			</td>
+		</tr>
+		{% endfor %}
+
+	</tbody>
+</table>
+<!-- End Relative Listing -->
+{% endfor %}
+{% endblock content %}
+

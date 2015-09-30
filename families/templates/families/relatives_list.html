@@ -1,0 +1,77 @@
+{% extends "families/base.html" %}
+
+{% load static from staticfiles %}
+
+{% block meta_title %}Родичі{% endblock meta_title %}
+
+{% block title %}База Родичів{% endblock title %}
+
+{% block add_relative %}
+<a class="btn btn-primary" href="{% url "relatives_add" %}">Додати Родича</a>
+{% endblock add_relative %}
+
+{% block content %}
+<!-- Start Relatives' Listing -->
+<table class="table table-bordered table-hover">
+	<thead>
+		<tr>
+			<th><a href="#">#</a></th>
+			<th>Photo</th>
+			<th><a href="#">Прізвище &uarr;</a></th>
+			<th><a href="#">Ім’я</a></th>
+			<th><a href="#">Стать</a></th>
+			<th><a href="#">Родина Мала</a></th>
+			<th><a href="#">№ Покоління</a></th>
+			<th>Дії</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for relative in relatives %}
+		<tr>
+			<td>{{ relative.id }}</td>
+			<td><img src="{% static relative.photo %}" alt="Me" height="30" width="30"
+				class="img-circle" /></td>
+			<td><a title="Редагувати" href="{% url "relatives_edit" relative.id %}">
+				{{ relative.last_name }}</a></td>
+			<td><a title="Редагувати" href="{% url "relatives_edit" relative.id	%}">
+				{{ relative.first_name }}</a></td>
+			<td>{{ relative.sex }}</td>
+			<td><a href="{% url "relatives_native" relative.id %}">
+				{% for member in relative.family %}
+					<p>{{ member }}</p>
+				{% endfor %}
+				</a>
+			</td>
+			<td><a href="{% url "generations" %}">{{ relative.generation }}</a></td>
+			<td><div class="dropdown">
+				<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+				Дія
+				<span class="caret"></span>
+				</button>
+				<ul class="dropdown-menu" role="menu">
+					<li role="presentation"><a role="menuitem" tabindex="-1"
+						href="{% url "relatives_info" relative.id %}">Інформація</a></li>
+					<li role="presentation"><a role="menuitem" tabindex="-1"
+						href="{% url "relatives_edit" relative.id %}">Редагувати</a></li>
+					<li role="presentation"><a role="menuitem" tabindex="-1"
+						href="{% url "relatives_delete" relative.id %}">Видалити</a></li>
+				</ul>
+				</div></td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+<!-- End Relative Listing -->
+
+<nav>
+<ul class="pagination">
+<li><a href="#">&laquo;</a></li>
+<li><a href="#">1</a></li>
+<li class="active"><a href="#">2</a></li>
+<li><a href="#">3</a></li>
+<li><a href="#">4</a></li>
+<li><a href="#">5</a></li>
+<li><a href="#">&raquo;</a></li>
+</ul>
+</nav>
+{% endblock content %}
