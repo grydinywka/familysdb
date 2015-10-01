@@ -18,7 +18,7 @@ from django.contrib import admin
 
 urlpatterns = patterns('',
     #Info urls
-    url(r'^$', 'families.views.info.info', name='home'),
+    url(r'^$', 'families.views.home.home', name='home'),
 
     #Relatives urls
     url(r'^relatives/$', 'families.views.relatives.relatives_list', name='relative_list'),

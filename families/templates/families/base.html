@@ -47,7 +47,7 @@
 					<li role="presentation"
 						{% url 'home' as the_url_home %}
 						{% if request.path == the_url_home %}class="active"{% endif %}>
-						<a href="{% url 'home' %}">Інформація</a>
+						<a href="{% url 'home' %}">Головна</a>
 					</li>
 					<li role="presentation"
 						{% url 'relative_list' as the_url %}

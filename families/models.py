@@ -66,3 +66,31 @@ class Relative(models.Model):
 
     def __unicode__(self):
         return u"%s %s" % (self.first_name, self.last_name)
+
+class Surname(models.Model):
+    DAD_SIDE = u"по-батьку"
+    MOM_SIDE = u"по-мамі"
+    SIDE_MOM_DAD = (
+        (DAD_SIDE, u"по-батьку"),
+        (MOM_SIDE, u"по-мамі"),
+    )
+
+    class Meta(object):
+        verbose_name = u"Прізвище"
+        verbose_name_plural = u"Прізвища"
+
+    title = models.CharField(
+        max_length=256,
+        blank=False,
+        verbose_name=u"Прізвище",
+    )
+
+    side = models.CharField(
+        max_length=9,
+        blank=False,
+        choices=SIDE_MOM_DAD,
+        default= DAD_SIDE
+    )
+
+    def __unicode__(self):
+        return u"%s" % (self.title)

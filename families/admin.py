@@ -3,7 +3,7 @@
 from django.contrib import admin
 from django.forms import ModelForm, ValidationError
 
-from .models import Relative
+from .models import Relative, Surname
 
 class RelativeFormAdmin(ModelForm):
     def clean_father(self):
@@ -21,3 +21,4 @@ class RelativeAdmin(admin.ModelAdmin):
 
 # Register your models here.
 admin.site.register(Relative, RelativeAdmin)
+admin.site.register(Surname)

@@ -42,7 +42,38 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 #myImg {
-	margin: 50px auto;
-	width: 360px;
-	display: block;
+	margin: 0px;
+	padding-bottom: 10px;
+}
+
+.floating-box {
+	float:left;
+	margin:10px;
+	width:360px;
+}
+
+.after-box {
+	clear:left;
+}
+
+#outBox, .floating-box {
+	outline:red dashed 0;
+}
+
+#outBox {
+	padding: 10px;
+}
+
+.surnames {
+	list-style-type:none;
+	font-size: 30px;
+}
+
+#leftUl {;
+	text-align: right;
+	padding-right:30px;
+}
+
+.text-info {
+	font-size:20px;
 }

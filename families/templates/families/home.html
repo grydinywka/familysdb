@@ -2,21 +2,41 @@
 
 {% load static from staticfiles %}
 
-{% block meta_title %}Інформація{% endblock meta_title %}
+{% block meta_title %}Головна{% endblock meta_title %}
 
+{% comment "title" %}
 {% block title %}Історія, Інформація{% endblock title %}
+{% endcomment %}
 
 {% block content %}
 <p class="text-info">
-	Усім привіт, вітаю Вас на своїй сторінці!
-	Я, Ігнатенко Сергій, даний сайт повинен дати уявлення про моїх родичів. Хочу знати якомога більше їх.
+	Вітаю Вас на <a href="#">своїй</a> сторінці!<br />
+	Даний сайт повинен дати уявлення про моїх родичів. Хочу знати якомога більше їх.
 	За допомогою сайту буде легше пояснити дітям хто є хто (і не лише дітям)!
 </p>
-<div>
-	<img id="myImg" src="{% static 'img/g2.jpg' %}" alt="Me" height="479" width="360" />
+<div id="outBox">
+	<div class="floating-box">
+		<ul class="surnames" id="leftUl">
+			{% for surname in surnames1 %}
+			<li>{{ surname.title }}</li>
+			{% endfor %}
+		</ul>
+	</div>
+	<div class="floating-box">
+		<img id="myImg" src="{% static 'img/g2.jpg' %}" alt="Me" height="479" width="360" />
+	</div>
+	<div class="floating-box">
+		<ul class="surnames" id="rightUl">
+			{% for surname in surnames2 %}
+			<li>{{ surname.title }}</li>
+			{% endfor %}
+		</ul>
+	</div>
 </div>
+<div class="after-box">
 <p> Величайший в мире страх — это страх перед мнениями других.
 	В то мгновение, когда ты не боишься толпы, ты больше не овца, ты становишься львом.
 	Великий рев раздается в твоем сердце — рев свободы.
 </p>
+</div>
 {% endblock content %}
