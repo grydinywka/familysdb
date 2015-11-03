@@ -29,20 +29,27 @@
 		{% for relative in relatives %}
 		<tr>
 			<td>{{ relative.id }}</td>
-			<td><img src="{% static relative.photo %}" alt="Me" height="30" width="30"
-				class="img-circle" /></td>
-			<td><a title="Редагувати" href="{% url "relatives_edit" relative.id %}">
+			<td>
+				{% if relative.photo %}
+					<img src="{{ relative.photo.url }}" alt="{{ relative.first_name }}" height="30" width="30"
+					class="img-circle" />
+				{% else %}
+					<img src="{% static 'media/my.jpeg' %}" alt="{{ relative.first_name }}" height="30" width="30"
+					class="img-circle" />
+				{% endif %}
+			</td>
+
+			<td><a title="Редагувати" href="{% url 'relatives_edit' relative.id %}">
 				{{ relative.last_name }}</a></td>
-			<td><a title="Редагувати" href="{% url "relatives_edit" relative.id	%}">
+			<td><a title="Редагувати" href="{% url 'relatives_edit' relative.id	%}">
 				{{ relative.first_name }}</a></td>
 			<td>{{ relative.sex }}</td>
-			<td><a href="{% url "relatives_native" relative.id %}">
-				{% for member in relative.family %}
-					<p>{{ member }}</p>
-				{% endfor %}
+			<td><a href="{% url 'relatives_native' relative.id %}">
+					<p>{{ relative.father }}</p>
+					<p>{{ relative.mother }}</p>
 				</a>
 			</td>
-			<td><a href="{% url "generations" %}">{{ relative.generation }}</a></td>
+			<td><a href="{% url 'generations' %}">{{ relative.generation }}</a></td>
 			<td><div class="dropdown">
 				<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
 				Дія
@@ -50,13 +57,14 @@
 				</button>
 				<ul class="dropdown-menu" role="menu">
 					<li role="presentation"><a role="menuitem" tabindex="-1"
-						href="{% url "relatives_info" relative.id %}">Інформація</a></li>
+						href="{% url 'relatives_info' relative.id %}">Інформація</a></li>
 					<li role="presentation"><a role="menuitem" tabindex="-1"
-						href="{% url "relatives_edit" relative.id %}">Редагувати</a></li>
+						href="{% url 'relatives_edit' relative.id %}">Редагувати</a></li>
 					<li role="presentation"><a role="menuitem" tabindex="-1"
-						href="{% url "relatives_delete" relative.id %}">Видалити</a></li>
+						href="{% url 'relatives_delete' relative.id %}">Видалити</a></li>
 				</ul>
-				</div></td>
+				</div>
+			</td>
 		</tr>
 		{% endfor %}
 	</tbody>

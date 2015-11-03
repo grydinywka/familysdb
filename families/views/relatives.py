@@ -3,32 +3,35 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 
+from families.models import Relative
+
 #Views for relatives
 
 def relatives_list(request):
-    relatives = (
-        {'id': 1,
-         'first_name': u'Сергій',
-         'last_name': u'Ігнатенко',
-         'sex': u'Ч',
-         'photo': 'img/sergiy.JPG',
-         'family': [u'Ігнатенко Микола', u'Ігнатенко(Пономарьова) Тетяна', u'Ігнатенко Надія'],
-         'generation': 0},
-        {'id': 2,
-         'first_name': u'Софія',
-         'last_name': u'Пелипецька',
-         'sex': u'Ж',
-         'photo': 'img/sofiya.JPG',
-         'family': [u'Пелипецький Руслан', u'Ігнатенко Надія'],
-         'generation': 1},
-        {'id': 3,
-         'first_name': u'Вікторія',
-         'last_name': u'Ігнатенко',
-         'sex': u'Ж',
-         'photo': 'img/vika.JPG',
-         'family': [u'Ігнатенко Віктор', u'Ігнатенко(Сливко) Оля', u'Ігнатенко Марина'],
-         'generation': 0}
-    )
+    # relatives = (
+    #     {'id': 1,
+    #      'first_name': u'Сергій',
+    #      'last_name': u'Ігнатенко',
+    #      'sex': u'Ч',
+    #      'photo': 'img/sergiy.JPG',
+    #      'family': [u'Ігнатенко Микола', u'Ігнатенко(Пономарьова) Тетяна', u'Ігнатенко Надія'],
+    #      'generation': 0},
+    #     {'id': 2,
+    #      'first_name': u'Софія',
+    #      'last_name': u'Пелипецька',
+    #      'sex': u'Ж',
+    #      'photo': 'img/sofiya.JPG',
+    #      'family': [u'Пелипецький Руслан', u'Ігнатенко Надія'],
+    #      'generation': 1},
+    #     {'id': 3,
+    #      'first_name': u'Вікторія',
+    #      'last_name': u'Ігнатенко',
+    #      'sex': u'Ж',
+    #      'photo': 'img/vika.JPG',
+    #      'family': [u'Ігнатенко Віктор', u'Ігнатенко(Сливко) Оля', u'Ігнатенко Марина'],
+    #      'generation': 0}
+    # )
+    relatives = Relative.objects.all()
 
     return render(request, 'families/relatives_list.html', {'relatives': relatives})
 
