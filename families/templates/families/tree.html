@@ -1,6 +1,7 @@
 {% extends "families/base.html" %}
 
 {% load static from staticfiles %}
+{% load json_filters %}
 
 {% block meta_title %}Springy.js image node demo{% endblock meta_title %}
 
@@ -8,50 +9,132 @@
 
 
 {% block content %}
-<div>
-    <canvas id="springydemo" width="800" height="400" style="border: 1px solid black;" />
-</div>
+
+<!--<div>-->
+    <!--<canvas id="springydemo" width="800" height="400" style="border: 1px solid black;" />-->
+<!--</div>-->
 <div>
     <canvas id="my_tree" width="800" height="400" style="border: 1px solid black;" />
 </div>
+<div>
+    {% for relative in allRelatives%}
+        <ul>
+            <li>{{ relative }} {{ relative.id }}</li>
+        </ul>
+    {% endfor %}
+</div>
+<!--<div>-->
+    <!--<p>{{ data_my }}</p>-->
+    <!--<p>{{ allRelatives }}</p>-->
+<!--</div>-->
 {% endblock content %}
 
 {% block extra_js %}
     <script src="//code.jquery.com/jquery.min.js"></script>
     <script src="{{ PORTAL_URL }}{% static 'js/tree/springy.js' %}"></script>
     <script src="{{ PORTAL_URL }}{% static 'js/tree/springyui.js' %}"></script>
-    <script src="{{ PORTAL_URL }}{% static 'js/tree/my_tree.js' %}"></script>
-    <script>
-    var graph = new Springy.Graph();
+    <!--<script src="{{ PORTAL_URL }}{% static 'js/tree/my_tree.js' %}"></script>-->
+    <script type="text/javascript">
+        function parseForDjango(djangoJson) {
+            var myDjangoList = ((djangoJson).replace(/&(l|g|quo)t;/g, function(a,b){
+                return {
+                    l   : '<',
+                    g   : '>',
+                    quo : '"'
+                }[b];
+            }));
 
-    function randRGB() {
-      return Math.floor(Math.random()*16777215).toString(16);
-    }
+            myDjangoList = myDjangoList.replace(/u'/g, '\'');
+            myDjangoList = myDjangoList.replace(/'/g, '\"');
 
-    var kitten = graph.newNode({image: {src: 'http://www.placekitten.com/100/100'}});
-    var kittenNarrow= graph.newNode({image: {src: 'http://www.placekitten.com/100/100', width: 80}});
-    var cards = graph.newNode({image: {src: 'http://upload.wikimedia.org/wikipedia/commons/1/1a/5_Zener_cards_%28icon%29.jpg'}});
+            myDjangoList = JSON.parse(myDjangoList);
 
-     var hello = graph.newNode({label: 'Springy.js image demo!'});
-     var fromkit = graph.newNode({label: 'From placekitten.com'});
-     var fromwik = graph.newNode({label: 'From Wikimedia Commons'});
-
-    graph.newEdge(hello, fromkit, {directional: false, color: randRGB()});
-    graph.newEdge(hello, fromwik, {directional: false, color: randRGB()});
-    graph.newEdge(fromkit, fromwik, {directional: false, color: randRGB()});
-    graph.newEdge(fromkit, kitten, {color: 'red'});
-    graph.newEdge(fromkit, kittenNarrow, {color: 'blue'});
-    graph.newEdge(fromwik, cards, {color: 'green'});
-
-
-    jQuery(function(){
-      var springy = window.springy = jQuery('#springydemo').springy({
-        graph: graph,
-        nodeSelected: function(node){
-          console.log('Node selected: ' + JSON.stringify(node.data));
-        },
-        repulsion: 150
-      });
-    });
+            return myDjangoList;
+        }
     </script>
+    <script type="text/javascript">
+        function buildCellTree(person, js_rel, personNode, mapDrawed) {
+            // make some nodes
+            var person_pk = person.pk;
+            var dad_pk = person.fields.father;
+            var mom_pk = person.fields.mother;
+
+
+            mapDrawed[person_pk] = personNode;
+
+            <!--document.write(js_rel);-->
+            var index = js_rel.indexOf(person);
+            if ( index > -1 ) {
+                js_rel.splice(index, 1);
+            }
+
+            for ( var i = 1; i < js_rel.length; i++ ) {
+                if ( js_rel[i].pk == dad_pk ) {
+                    var dad = graph.newNode({label: js_rel[i].fields.first_name});
+                    graph.newEdge(dad, personNode);
+                    buildCellTree(js_rel[i], js_rel, dad, mapDrawed);
+                } else if ( js_rel[i].pk == mom_pk ) {
+                    var mom = graph.newNode({label: js_rel[i].fields.first_name});
+                    graph.newEdge(mom, personNode);
+                    buildCellTree(js_rel[i], js_rel, mom, mapDrawed);
+                }
+            }
+            if ( dad_pk && mom_pk ) {
+                graph.newEdge(mom, dad, {directional: false});
+            }
+
+
+            var children = [];
+            var male_sex = "\u0427\u043e\u043b\u043e\u0432\u0456\u0447\u0430";
+            if ( person.fields.sex == male_sex ) {
+                for ( var i = 0; i < js_rel.length; i++ ) {
+                    if ( js_rel[i].fields.father == person_pk ) {
+                        children.push(js_rel[i]);
+                    }
+                }
+            } else {
+                for ( var i = 0; i < js_rel.length; i++ ) {
+                    if ( js_rel[i].fields.mother == person_pk ) {
+                        children.push(js_rel[i]);
+                    }
+                }
+            }
+
+            for ( var i = 0; i < children.length; i++ ) {
+                var child = graph.newNode({label: children[i].fields.first_name + " " + children[i].fields.last_name});
+                graph.newEdge(personNode, child);
+                <!--buildCellTree(children[i], js_rel, child, mapDrawed);-->
+            }
+        }
+        // --------------------------------------------------------------------------------------------------
+        var js_rel = parseForDjango("{{ allRelatives|jsonify }}");
+        // make a new graph
+        var graph = new Springy.Graph();
+
+        var personNode = graph.newNode({label: js_rel[1].fields.first_name + " " + js_rel[1].fields.last_name});
+        var mapDrawed = new Object();
+
+
+        buildCellTree(js_rel[1], js_rel, personNode, mapDrawed);
+        <!--document.write(mapDrawed[5]);-->
+        <!--document.write("<p></p>");-->
+
+
+        // connect them with an edge
+        var layout = new Springy.Layout.ForceDirected(
+          graph,
+          0, // Spring stiffness
+          0, // Node repulsion
+          0 // Damping
+        );
+
+        $('#my_tree').springy(
+            {
+                graph:  graph,
+                layout: layout
+            }
+        );
+    </script>
+
+    <script src="{{ PORTAL_URL }}{% static 'js/tree/example_tree.js' %}"></script>
 {% endblock extra_js %}
