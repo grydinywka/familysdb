@@ -1,2 +1,5 @@
 development_settings.py
 .env
+.idea/*
+*.xml
+*.iml
